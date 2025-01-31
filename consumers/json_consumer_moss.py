@@ -64,7 +64,7 @@ def get_kafka_consumer_group_id() -> int:
 # to ensure counts are integers
 # {author: count} author is the key and count is the value
 author_counts = defaultdict(int)
-
+KEYWORDS = {"dynos", "rock"}
 
 #####################################
 # Function to process a single message
@@ -92,6 +92,7 @@ def process_message(message: str) -> None:
         if isinstance(message_dict, dict):
             # Extract the 'author' field from the Python dictionary
             author = message_dict.get("author", "unknown")
+            text = message_dict.get("message", "").lower() #added line
             logger.info(f"Message received from author: {author}")
 
             # Increment the count for the author
@@ -99,6 +100,10 @@ def process_message(message: str) -> None:
 
             # Log the updated counts
             logger.info(f"Updated author counts: {dict(author_counts)}")
+
+            # Check for keyword-based alerts ADD LINES
+            if any(keyword in text for keyword in KEYWORDS):
+                logger.warning(f"ALERT: Message contains a critical keyword! Message: {message_dict}")
         else:
             logger.error(f"Expected a dictionary but got: {type(message_dict)}")
 
