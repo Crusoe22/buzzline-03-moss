@@ -42,7 +42,7 @@ load_dotenv()
 
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("SMOKER_TOPIC", "unknown_topic")
+    topic = os.getenv("EVEREST_TOPIC", "unknown_topic")
     logger.info(f"Kafka topic: {topic}")
     return topic
 
@@ -131,6 +131,10 @@ def process_message(message: str, rolling_window: deque, window_size: int) -> No
             logger.error(f"Invalid message format: {message}")
             return
 
+        # Check for critical temperature anomalies
+        if temperature > -20 or temperature < -60:
+            logger.warning(f"ALERT: Extreme temperature detected! Temperature: {temperature}°F at {timestamp}")
+
         # Append the temperature reading to the rolling window
         rolling_window.append(temperature)
 
@@ -139,6 +143,8 @@ def process_message(message: str, rolling_window: deque, window_size: int) -> No
             logger.info(
                 f"STALL DETECTED at {timestamp}: Temp stable at {temperature}°F over last {window_size} readings."
             )
+
+            
 
     except json.JSONDecodeError as e:
         logger.error(f"JSON decoding error for message '{message}': {e}")

@@ -44,14 +44,14 @@ load_dotenv()
 
 def get_kafka_topic() -> str:
     """Fetch Kafka topic from environment or use default."""
-    topic = os.getenv("SMOKER_TOPIC", "unknown_topic")
+    topic = os.getenv("EVEREST_TOPIC", "unknown_topic")
     logger.info(f"Kafka topic: {topic}")
     return topic
 
 
 def get_message_interval() -> int:
     """Fetch message interval from environment or use default."""
-    interval = int(os.getenv("SMOKER_INTERVAL_SECONDS", 1))
+    interval = int(os.getenv("EVEREST_INTERVAL_SECONDS", 1))
     logger.info(f"Message interval: {interval} seconds")
     return interval
 
@@ -70,7 +70,7 @@ DATA_FOLDER = PROJECT_ROOT.joinpath("data")
 logger.info(f"Data folder: {DATA_FOLDER}")
 
 # Set the name of the data file
-DATA_FILE = DATA_FOLDER.joinpath("smoker_temps.csv")
+DATA_FILE = DATA_FOLDER.joinpath("everest_temps.csv")
 logger.info(f"Data file: {DATA_FILE}")
 
 #####################################

@@ -1,3 +1,63 @@
+# Kafka Producer and Consumer Scripts
+
+This repository includes four new scripts that consume JSON messages from a Kafka topic, processing two types of data streams. One set of scripts extracts temperature readings, detects anomalies using a rolling window, and logs potential stalls. The other set processes messages by extracting content and author details, maintaining author counts, and identifying critical keywords to trigger alerts. Configuration values are read from environment variables, and all relevant data is logged for analysis.
+
+Below, you'll find instructions to set up and run the producer and consumer scripts, as well as how to start the necessary services in a WSL (Windows Subsystem for Linux) environment.
+
+## Running the Producer and Consumer Scripts
+
+### Activate the Python Virtual Environment
+
+```shell
+
+py -m venv .venv
+.venv\Scripts\Activate
+py -m pip install -r requirements.txt
+
+
+```
+
+### Start Producer and Consumer 
+
+```shell
+.venv\Scripts\activate
+py -m producers.csv_producer_moss
+
+or
+
+py -m producers.json_producer_moss
+
+
+.venv\Scripts\activate
+py -m consumers.csv_consumer_moss
+
+or
+
+py -m consumers.json_consumer_moss
+```
+
+### Start WSL Terminal
+
+```shell
+Terminal 1
+
+PS C:\Users\nolan> wsl
+moss@InspironNolan:~$ cd ~/kafka
+moss@InspironNolan:~/kafka$ bin/zookeeper-server-start.sh config/zookeeper.properties
+
+Terminal 2
+
+PS C:\Users\nolan> wsl
+moss@InspironNolan:/mnt/c/Users/nolan$ cd ~/kafka
+moss@InspironNolan:~/kafka$ bin/kafka-server-start.sh config/server.properties
+```
+
+
+
+
+
+
+
 # buzzline-03-case
 
 Streaming data does not have to be simple text.
